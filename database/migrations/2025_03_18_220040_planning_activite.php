@@ -13,18 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('utilisateurs', function (Blueprint $table) {
-            $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role', 50);
-            $table->string('code', 50)->nullable();
+        Schema::create('planning_activite', function (Blueprint $table) {
+            $table->foreignId('planning_id')->constrained('plannings')->onDelete('cascade');
+            $table->foreignId('activite_id')->constrained('activites')->onDelete('cascade');
+            $table->primary(['planning_id', 'activite_id']);
             $table->timestamps();
         });
-            
-            
     }
 
     /**
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('utilisateurs');
+        Schema::dropIfExists('planning_activite');
     }
 };

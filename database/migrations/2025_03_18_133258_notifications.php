@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('utilisateurs', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role', 50);
-            $table->string('code', 50)->nullable();
+            $table->foreignId('diffuseur_id')->constrained('utilisateurs')->onDelete('cascade');
+            $table->boolean('read')->default(false);
+            $table->text('content');
             $table->timestamps();
         });
-            
-            
     }
 
     /**
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('utilisateurs');
+        Schema::dropIfExists('notifications');
     }
 };

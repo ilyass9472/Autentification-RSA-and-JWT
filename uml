@@ -1,0 +1,131 @@
+classDiagram
+    class Utilisateur {
+        -int id
+        -string firstname
+        -string lastname
+        -string email
+        -string password
+        -string role
+        -string img
+    }
+    
+    class Role {
+        -int id
+        -string name
+    }
+    
+    class Notification {
+        -int id
+        -Utilisateur diffuseur
+        -boolean read
+        -string content
+        -datetime created_at
+    }
+    
+    class Memberjury {
+        -int id
+        -string name
+        -int code
+    }
+    
+    class Theme {
+        -int id
+        -string name
+        -string cover
+    }
+    
+    class Rule {
+        -int id
+        -string name
+        -string description
+    }
+    
+    class Hackathon {
+        -int id
+        -Theme theme
+        -Rule rule
+        -Utilisateur organisateur
+        -string name
+        -string description
+        -date start_date
+        -date end_date
+    }
+    
+    class Project {
+        -int id
+        -string name
+        -date date
+        -string description
+        -Hackathon hackathon
+    }
+    
+    class Equipe {
+        -int id
+        -string name
+        -string logo
+        -Hackathon hackathon
+    }
+    
+    class Jeton {
+        -int id
+        -string status
+    }
+    
+    class Jury {
+        -int id
+        -Equipe team
+    }
+    
+    class Note {
+        -int id
+        -date date
+        -string commentaire
+        -Memberjury membre
+    }
+    
+    class .createTable('roles', function(table) {
+ {
+        -int id
+        -Project project
+        -Utilisateur jury
+        -float score
+        -string commentaire
+        -datetime created_at
+    }
+    
+    class Activite {
+        -int id
+        -string name
+        -string description
+        -date date
+    }
+    
+    class Planning {
+        -int id
+        -Hackathon hackathon
+    }
+    
+    % Relationships
+    Utilisateur "1" -- "0..*" Role : has
+    Utilisateur "1" -- "0..*" Notification : receives
+    Utilisateur "1" -- "0..*" Equipe : belongs to
+    
+    Role "1" -- "0..*" Memberjury : has
+    
+    Hackathon "1" -- "1" Theme : has
+    Hackathon "1" -- "1..*" Rule : has
+    Hackathon "1" -- "1" Planning : has
+    Hackathon "1" -- "0..*" Project : has
+    Hackathon "1" -- "0..*" Equipe : has
+    
+    Planning "1" -- "1..*" Activite : has
+    
+    Equipe "1" -- "0..*" Jeton : has
+    Equipe "1" -- "0..*" Note : receives
+    Equipe "1" -- "1" Jury : evaluated by
+    
+    Project "1" -- "0..*" Evaluation : has
+    
+    Memberjury "1" -- "0..*" Note : gives
+    
+    Jury "1" -- "0..*" Evaluation : conducts

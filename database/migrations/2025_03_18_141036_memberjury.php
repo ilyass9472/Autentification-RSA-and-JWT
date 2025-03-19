@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('utilisateurs', function (Blueprint $table) {
+        Schema::create('memberjuries', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role', 50);
-            $table->string('code', 50)->nullable();
+            $table->string('name');
+            $table->integer('code');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->timestamps();
         });
-            
-            
     }
 
     /**
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('utilisateurs');
+        Schema::dropIfExists('memberjuries');
     }
 };
